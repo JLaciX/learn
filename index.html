@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="hu">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Kettes számrendszer bemutatása</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f0f0f0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+      }
+
+      .container {
+        background-color: #ffffff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        text-align: center;
+      }
+
+      .input-section,
+      .output-section {
+        margin-bottom: 20px;
+      }
+
+      input[type="number"] {
+        padding: 5px;
+        margin-left: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+      }
+
+      button {
+        padding: 5px 10px;
+        margin-left: 10px;
+        border: none;
+        background-color: #007bff;
+        color: white;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+
+      button:hover {
+        background-color: #0056b3;
+      }
+
+      #binaryTable {
+        margin: 0 auto;
+        border-collapse: collapse;
+        width: 80%;
+      }
+
+      #binaryTable th,
+      #binaryTable td {
+        border: 1px solid #ddd;
+        padding: 8px;
+      }
+
+      #binaryTable th {
+        background-color: #f2f2f2;
+        font-weight: bold;
+      }
+
+      .hidden {
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Kettes számrendszer bemutatása</h1>
+      <div class="input-section">
+        <label for="decimalInput">Adj meg egy decimális számot:</label>
+        <input type="number" id="decimalInput" min="0" />
+        <button id="convertButton">Átváltás</button>
+      </div>
+      <div class="output-section">
+        <h2>Eredmény</h2>
+        <table id="binaryTable" class="hidden">
+          <thead>
+            <tr id="binaryValueRow"></tr>
+            <tr id="positionRow"></tr>
+          </thead>
+        </table>
+      </div>
+    </div>
+    <script>
+      document
+        .getElementById("convertButton")
+        .addEventListener("click", function () {
+          const decimalInput = document.getElementById("decimalInput").value;
+          const binaryValue = convertToBinary(decimalInput);
+
+          if (
+            binaryValue !== "Kérlek adj meg egy számot!" &&
+            binaryValue !== "Érvénytelen szám!"
+          ) {
+            document.getElementById("binaryTable").classList.remove("hidden");
+            displayBinaryTable(binaryValue);
+          } else {
+            document.getElementById("binaryTable").classList.add("hidden");
+            alert(binaryValue);
+          }
+        });
+
+      function convertToBinary(decimal) {
+        if (decimal === "") {
+          return "Kérlek adj meg egy számot!";
+        }
+
+        const number = parseInt(decimal, 10);
+        if (isNaN(number)) {
+          return "Érvénytelen szám!";
+        }
+
+        return number.toString(2);
+      }
+
+      function displayBinaryTable(binaryValue) {
+        const binaryValueRow = document.getElementById("binaryValueRow");
+        const positionRow = document.getElementById("positionRow");
+
+        // Törli az előző tartalmat
+        binaryValueRow.innerHTML = "";
+        positionRow.innerHTML = "";
+
+        // Hozzáadja az új tartalmat
+        for (let i = 0; i < binaryValue.length; i++) {
+          const binaryDigit = binaryValue[i];
+          const position = binaryValue.length - 1 - i;
+
+          const binaryCell = document.createElement("th");
+          binaryCell.textContent = binaryDigit;
+          binaryValueRow.appendChild(binaryCell);
+
+          const positionCell = document.createElement("td");
+          positionCell.textContent = Math.pow(2, position);
+          positionRow.appendChild(positionCell);
+        }
+      }
+    </script>
+  </body>
+</html>
