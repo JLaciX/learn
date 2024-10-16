@@ -87,6 +87,10 @@
             <tr id="positionRow"></tr>
           </thead>
         </table>
+        <div id="explanation" class="hidden">
+          <h3>Összegzés</h3>
+          <p id="summary"></p>
+        </div>
       </div>
     </div>
     <script>
@@ -101,9 +105,12 @@
             binaryValue !== "Érvénytelen szám!"
           ) {
             document.getElementById("binaryTable").classList.remove("hidden");
+            document.getElementById("explanation").classList.remove("hidden");
             displayBinaryTable(binaryValue);
+            displayExplanation(binaryValue);
           } else {
             document.getElementById("binaryTable").classList.add("hidden");
+            document.getElementById("explanation").classList.add("hidden");
             alert(binaryValue);
           }
         });
@@ -142,6 +149,27 @@
           positionCell.textContent = Math.pow(2, position);
           positionRow.appendChild(positionCell);
         }
+      }
+
+      function displayExplanation(binaryValue) {
+        const summaryElement = document.getElementById("summary");
+        let explanation = "";
+        let decimalValue = 0;
+
+        for (let i = 0; i < binaryValue.length; i++) {
+          const binaryDigit = parseInt(binaryValue[i], 10);
+          const position = binaryValue.length - 1 - i;
+          const value = binaryDigit * Math.pow(2, position);
+
+          decimalValue += value;
+          explanation += `${binaryDigit} * ${Math.pow(
+            2,
+            position
+          )} = ${value}<br>`;
+        }
+
+        explanation += `<br><strong>Decimális érték: ${decimalValue}</strong>`;
+        summaryElement.innerHTML = explanation;
       }
     </script>
   </body>
