@@ -49,19 +49,23 @@
         background-color: #0056b3;
       }
 
-      #binaryTable {
-        margin: 0 auto;
+      #binaryTable,
+      #decimalTable {
+        margin: 20px auto;
         border-collapse: collapse;
         width: 80%;
       }
 
       #binaryTable th,
-      #binaryTable td {
+      #binaryTable td,
+      #decimalTable th,
+      #decimalTable td {
         border: 1px solid #ddd;
         padding: 8px;
       }
 
-      #binaryTable th {
+      #binaryTable th,
+      #decimalTable th {
         background-color: #f2f2f2;
         font-weight: bold;
       }
@@ -84,12 +88,22 @@
         <table id="binaryTable" class="hidden">
           <thead>
             <tr id="binaryValueRow"></tr>
-            <tr id="positionRow"></tr>
+            <tr id="binaryPositionRow"></tr>
           </thead>
         </table>
-        <div id="explanation" class="hidden">
-          <h3>Összegzés</h3>
-          <p id="summary"></p>
+        <div id="binaryExplanation" class="hidden">
+          <h3>Bináris bontás</h3>
+          <p id="binarySummary"></p>
+        </div>
+        <table id="decimalTable" class="hidden">
+          <thead>
+            <tr id="decimalValueRow"></tr>
+            <tr id="decimalPositionRow"></tr>
+          </thead>
+        </table>
+        <div id="decimalExplanation" class="hidden">
+          <h3>Decimális bontás</h3>
+          <p id="decimalSummary"></p>
         </div>
       </div>
     </div>
@@ -105,12 +119,26 @@
             binaryValue !== "Érvénytelen szám!"
           ) {
             document.getElementById("binaryTable").classList.remove("hidden");
-            document.getElementById("explanation").classList.remove("hidden");
+            document
+              .getElementById("binaryExplanation")
+              .classList.remove("hidden");
+            document.getElementById("decimalTable").classList.remove("hidden");
+            document
+              .getElementById("decimalExplanation")
+              .classList.remove("hidden");
             displayBinaryTable(binaryValue);
-            displayExplanation(binaryValue);
+            displayBinaryExplanation(binaryValue);
+            displayDecimalTable(decimalInput);
+            displayDecimalExplanation(decimalInput);
           } else {
             document.getElementById("binaryTable").classList.add("hidden");
-            document.getElementById("explanation").classList.add("hidden");
+            document
+              .getElementById("binaryExplanation")
+              .classList.add("hidden");
+            document.getElementById("decimalTable").classList.add("hidden");
+            document
+              .getElementById("decimalExplanation")
+              .classList.add("hidden");
             alert(binaryValue);
           }
         });
@@ -130,11 +158,11 @@
 
       function displayBinaryTable(binaryValue) {
         const binaryValueRow = document.getElementById("binaryValueRow");
-        const positionRow = document.getElementById("positionRow");
+        const binaryPositionRow = document.getElementById("binaryPositionRow");
 
         // Törli az előző tartalmat
         binaryValueRow.innerHTML = "";
-        positionRow.innerHTML = "";
+        binaryPositionRow.innerHTML = "";
 
         // Hozzáadja az új tartalmat
         for (let i = 0; i < binaryValue.length; i++) {
@@ -147,12 +175,12 @@
 
           const positionCell = document.createElement("td");
           positionCell.textContent = Math.pow(2, position);
-          positionRow.appendChild(positionCell);
+          binaryPositionRow.appendChild(positionCell);
         }
       }
 
-      function displayExplanation(binaryValue) {
-        const summaryElement = document.getElementById("summary");
+      function displayBinaryExplanation(binaryValue) {
+        const binarySummaryElement = document.getElementById("binarySummary");
         let explanation = "";
         let decimalValue = 0;
 
@@ -169,7 +197,57 @@
         }
 
         explanation += `<br><strong>Decimális érték: ${decimalValue}</strong>`;
-        summaryElement.innerHTML = explanation;
+        binarySummaryElement.innerHTML = explanation;
+      }
+
+      function displayDecimalTable(decimalInput) {
+        const decimalValueRow = document.getElementById("decimalValueRow");
+        const decimalPositionRow =
+          document.getElementById("decimalPositionRow");
+
+        // Törli az előző tartalmat
+        decimalValueRow.innerHTML = "";
+        decimalPositionRow.innerHTML = "";
+
+        const decimalValue = parseInt(decimalInput, 10);
+        const decimalString = decimalValue.toString().split("");
+
+        // Hozzáadja az új tartalmat
+        for (let i = 0; i < decimalString.length; i++) {
+          const decimalDigit = decimalString[i];
+          const position = decimalString.length - 1 - i;
+
+          const decimalCell = document.createElement("th");
+          decimalCell.textContent = decimalDigit;
+          decimalValueRow.appendChild(decimalCell);
+
+          const positionCell = document.createElement("td");
+          positionCell.textContent = Math.pow(10, position);
+          decimalPositionRow.appendChild(positionCell);
+        }
+      }
+
+      function displayDecimalExplanation(decimalInput) {
+        const decimalSummaryElement = document.getElementById("decimalSummary");
+        const decimalValue = parseInt(decimalInput, 10);
+        const decimalString = decimalValue.toString().split("");
+        let explanation = "";
+        let totalValue = 0;
+
+        for (let i = 0; i < decimalString.length; i++) {
+          const decimalDigit = parseInt(decimalString[i], 10);
+          const position = decimalString.length - 1 - i;
+          const value = decimalDigit * Math.pow(10, position);
+
+          totalValue += value;
+          explanation += `${decimalDigit} * ${Math.pow(
+            10,
+            position
+          )} = ${value}<br>`;
+        }
+
+        explanation += `<br><strong>Összeg: ${totalValue}</strong>`;
+        decimalSummaryElement.innerHTML = explanation;
       }
     </script>
   </body>
