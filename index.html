@@ -3,252 +3,50 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Kettes számrendszer bemutatása</title>
-    <style>
-      body {
-        font-family: Arial, sans-serif;
-        background-color: #f0f0f0;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-        margin: 0;
-      }
-
-      .container {
-        background-color: #ffffff;
-        padding: 20px;
-        border-radius: 8px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        text-align: center;
-      }
-
-      .input-section,
-      .output-section {
-        margin-bottom: 20px;
-      }
-
-      input[type="number"] {
-        padding: 5px;
-        margin-left: 10px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-      }
-
-      button {
-        padding: 5px 10px;
-        margin-left: 10px;
-        border: none;
-        background-color: #007bff;
-        color: white;
-        border-radius: 4px;
-        cursor: pointer;
-      }
-
-      button:hover {
-        background-color: #0056b3;
-      }
-
-      #binaryTable,
-      #decimalTable {
-        margin: 20px auto;
-        border-collapse: collapse;
-        width: 80%;
-      }
-
-      #binaryTable th,
-      #binaryTable td,
-      #decimalTable th,
-      #decimalTable td {
-        border: 1px solid #ddd;
-        padding: 8px;
-      }
-
-      #binaryTable th,
-      #decimalTable th {
-        background-color: #f2f2f2;
-        font-weight: bold;
-      }
-
-      .hidden {
-        display: none;
-      }
-    </style>
+    <title>Oktatási Weboldal</title>
+    <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <div class="container">
-      <h1>Kettes számrendszer bemutatása</h1>
-      <div class="input-section">
-        <label for="decimalInput">Adj meg egy decimális számot:</label>
-        <input type="number" id="decimalInput" min="0" />
-        <button id="convertButton">Átváltás</button>
-      </div>
-      <div class="output-section">
-        <h2>Eredmény</h2>
-        <table id="binaryTable" class="hidden">
-          <thead>
-            <tr id="binaryValueRow"></tr>
-            <tr id="binaryPositionRow"></tr>
-          </thead>
-        </table>
-        <div id="binaryExplanation" class="hidden">
-          <h3>Bináris bontás</h3>
-          <p id="binarySummary"></p>
+    <header>
+      <nav>
+        <div class="logo">EduWeb</div>
+        <ul class="nav-links">
+          <li><a href="index.html">Főoldal</a></li>
+          <!--   <li><a href="app.html">Webalkalmazások</a></li>-->
+        </ul>
+      </nav>
+    </header>
+    <main>
+      <section class="hero">
+        <h1>Üdvözöljük az Oktatási Weboldalon!</h1>
+        <p>
+          Fedezze fel a legjobb webalkalmazásokat, amelyek segítik a tanulást és
+          a tanítást.
+        </p>
+      </section>
+      <section class="content">
+        <h2>Legújabb Alkalmazások</h2>
+        <div class="app-grid">
+          <!-- Itt jelenítheted meg az alkalmazásokat rövid leírással -->
+          <div class="app-card">
+            <h3>Raktárkezelő</h3>
+            <p>
+              Ez a raktárkezelő alkalmazás segít nyomon követni a készleteket és
+              statisztikákat generálni.
+            </p>
+            <a href="raktar.html" class="btn">További információ</a>
+          </div>
+          <div class="app-card">
+            <h3>Kettes számrendszer bemutató</h3>
+            <p>Ez az alkalmazás segít elsajátítani a kettes számrendszert.</p>
+            <a href="binar.html" class="btn">További információ</a>
+          </div>
+          <!-- További kártyák ide -->
         </div>
-        <table id="decimalTable" class="hidden">
-          <thead>
-            <tr id="decimalValueRow"></tr>
-            <tr id="decimalPositionRow"></tr>
-          </thead>
-        </table>
-        <div id="decimalExplanation" class="hidden">
-          <h3>Decimális bontás</h3>
-          <p id="decimalSummary"></p>
-        </div>
-      </div>
-    </div>
-    <script>
-      document
-        .getElementById("convertButton")
-        .addEventListener("click", function () {
-          const decimalInput = document.getElementById("decimalInput").value;
-          const binaryValue = convertToBinary(decimalInput);
-
-          if (
-            binaryValue !== "Kérlek adj meg egy számot!" &&
-            binaryValue !== "Érvénytelen szám!"
-          ) {
-            document.getElementById("binaryTable").classList.remove("hidden");
-            document
-              .getElementById("binaryExplanation")
-              .classList.remove("hidden");
-            document.getElementById("decimalTable").classList.remove("hidden");
-            document
-              .getElementById("decimalExplanation")
-              .classList.remove("hidden");
-            displayBinaryTable(binaryValue);
-            displayBinaryExplanation(binaryValue);
-            displayDecimalTable(decimalInput);
-            displayDecimalExplanation(decimalInput);
-          } else {
-            document.getElementById("binaryTable").classList.add("hidden");
-            document
-              .getElementById("binaryExplanation")
-              .classList.add("hidden");
-            document.getElementById("decimalTable").classList.add("hidden");
-            document
-              .getElementById("decimalExplanation")
-              .classList.add("hidden");
-            alert(binaryValue);
-          }
-        });
-
-      function convertToBinary(decimal) {
-        if (decimal === "") {
-          return "Kérlek adj meg egy számot!";
-        }
-
-        const number = parseInt(decimal, 10);
-        if (isNaN(number)) {
-          return "Érvénytelen szám!";
-        }
-
-        return number.toString(2);
-      }
-
-      function displayBinaryTable(binaryValue) {
-        const binaryValueRow = document.getElementById("binaryValueRow");
-        const binaryPositionRow = document.getElementById("binaryPositionRow");
-
-        // Törli az előző tartalmat
-        binaryValueRow.innerHTML = "";
-        binaryPositionRow.innerHTML = "";
-
-        // Hozzáadja az új tartalmat
-        for (let i = 0; i < binaryValue.length; i++) {
-          const binaryDigit = binaryValue[i];
-          const position = binaryValue.length - 1 - i;
-
-          const binaryCell = document.createElement("th");
-          binaryCell.textContent = binaryDigit;
-          binaryValueRow.appendChild(binaryCell);
-
-          const positionCell = document.createElement("td");
-          positionCell.textContent = Math.pow(2, position);
-          binaryPositionRow.appendChild(positionCell);
-        }
-      }
-
-      function displayBinaryExplanation(binaryValue) {
-        const binarySummaryElement = document.getElementById("binarySummary");
-        let explanation = "";
-        let decimalValue = 0;
-
-        for (let i = 0; i < binaryValue.length; i++) {
-          const binaryDigit = parseInt(binaryValue[i], 10);
-          const position = binaryValue.length - 1 - i;
-          const value = binaryDigit * Math.pow(2, position);
-
-          decimalValue += value;
-          explanation += `${binaryDigit} * ${Math.pow(
-            2,
-            position
-          )} = ${value}<br>`;
-        }
-
-        explanation += `<br><strong>Decimális érték: ${decimalValue}</strong>`;
-        binarySummaryElement.innerHTML = explanation;
-      }
-
-      function displayDecimalTable(decimalInput) {
-        const decimalValueRow = document.getElementById("decimalValueRow");
-        const decimalPositionRow =
-          document.getElementById("decimalPositionRow");
-
-        // Törli az előző tartalmat
-        decimalValueRow.innerHTML = "";
-        decimalPositionRow.innerHTML = "";
-
-        const decimalValue = parseInt(decimalInput, 10);
-        const decimalString = decimalValue.toString().split("");
-
-        // Hozzáadja az új tartalmat
-        for (let i = 0; i < decimalString.length; i++) {
-          const decimalDigit = decimalString[i];
-          const position = decimalString.length - 1 - i;
-
-          const decimalCell = document.createElement("th");
-          decimalCell.textContent = decimalDigit;
-          decimalValueRow.appendChild(decimalCell);
-
-          const positionCell = document.createElement("td");
-          positionCell.textContent = Math.pow(10, position);
-          decimalPositionRow.appendChild(positionCell);
-        }
-      }
-
-      function displayDecimalExplanation(decimalInput) {
-        const decimalSummaryElement = document.getElementById("decimalSummary");
-        const decimalValue = parseInt(decimalInput, 10);
-        const decimalString = decimalValue.toString().split("");
-        let explanation = "";
-        let totalValue = 0;
-
-        for (let i = 0; i < decimalString.length; i++) {
-          const decimalDigit = parseInt(decimalString[i], 10);
-          const position = decimalString.length - 1 - i;
-          const value = decimalDigit * Math.pow(10, position);
-
-          totalValue += value;
-          explanation += `${decimalDigit} * ${Math.pow(
-            10,
-            position
-          )} = ${value}<br>`;
-        }
-
-        explanation += `<br><strong>Összeg: ${totalValue}</strong>`;
-        decimalSummaryElement.innerHTML = explanation;
-      }
-    </script>
+      </section>
+    </main>
+    <footer>
+      <p>&copy; 2024 Oktatási Weboldal. Minden jog fenntartva.</p>
+    </footer>
   </body>
 </html>
